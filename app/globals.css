@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 25% 97%;
+    --foreground: 220 18% 18%;
+    --card: 40 30% 99%;
+    --card-foreground: 220 18% 18%;
+    --popover: 40 30% 99%;
+    --popover-foreground: 220 18% 18%;
+    --primary: 220 40% 30%;
+    --primary-foreground: 40 25% 97%;
+    --secondary: 38 22% 92%;
+    --secondary-foreground: 220 25% 25%;
+    --muted: 38 20% 94%;
+    --muted-foreground: 220 10% 42%;
+    --accent: 30 38% 90%;
+    --accent-foreground: 25 40% 28%;
+    --destructive: 2 62% 50%;
+    --destructive-foreground: 40 25% 97%;
+    --success: 158 42% 38%;
+    --success-foreground: 40 25% 97%;
+    --warning: 32 80% 48%;
+    --warning-foreground: 30 60% 16%;
+    --info: 205 55% 42%;
+    --info-foreground: 40 25% 97%;
+    --border: 35 18% 86%;
+    --input: 35 18% 86%;
+    --ring: 220 40% 30%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 220 20% 10%;
+    --foreground: 38 18% 92%;
+    --card: 220 18% 13%;
+    --card-foreground: 38 18% 92%;
+    --popover: 220 18% 13%;
+    --popover-foreground: 38 18% 92%;
+    --primary: 38 40% 78%;
+    --primary-foreground: 220 30% 14%;
+    --secondary: 220 12% 18%;
+    --secondary-foreground: 38 20% 88%;
+    --muted: 220 12% 18%;
+    --muted-foreground: 38 10% 68%;
+    --accent: 30 30% 22%;
+    --accent-foreground: 30 40% 86%;
+    --destructive: 2 60% 55%;
+    --destructive-foreground: 38 18% 92%;
+    --success: 158 40% 55%;
+    --success-foreground: 158 30% 10%;
+    --warning: 32 75% 58%;
+    --warning-foreground: 30 60% 12%;
+    --info: 205 50% 60%;
+    --info-foreground: 205 40% 10%;
+    --border: 220 10% 22%;
+    --input: 220 10% 22%;
+    --ring: 38 40% 78%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    background-image:
+      radial-gradient(at 100% 0%, hsl(30 40% 92% / 0.7) 0px, transparent 45%),
+      radial-gradient(at 0% 100%, hsl(220 20% 94% / 0.6) 0px, transparent 45%);
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .text-gradient-brand {
+    background-image: linear-gradient(
+      90deg,
+      hsl(var(--primary)),
+      hsl(25 45% 38%) 70%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-gradient-brand {
+    background-image: linear-gradient(
+      135deg,
+      hsl(var(--primary)),
+      hsl(25 45% 38%)
+    );
+  }
+
+  @keyframes page-transition-enter-kf {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  .page-transition-enter {
+    animation: page-transition-enter-kf 0.28s cubic-bezier(0.22, 1, 0.36, 1)
+      both;
+    will-change: opacity, transform, filter;
+  }
+
+  @keyframes time-flip-enter-kf {
+    from {
+      opacity: 0;
+      transform: translateY(85%) rotateX(-88deg);
+      filter: blur(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes time-flip-leave-kf {
+    from {
+      opacity: 1;
+      transform: translateY(0) rotateX(0deg);
+      filter: blur(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-85%) rotateX(88deg);
+      filter: blur(5px);
+    }
+  }
+
+  .time-ticker-slot {
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    height: 1.2em;
+  }
+
+  .time-flip {
+    position: relative;
+    display: inline-block;
+    min-width: 2ch;
+    height: 1.2em;
+    overflow: hidden;
+    perspective: 320px;
+  }
+
+  .time-flip-static,
+  .time-flip-enter,
+  .time-flip-leave {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center;
+    will-change: opacity, transform, filter;
+  }
+
+  .time-flip-static {
+    position: relative;
+    opacity: 0;
+  }
+
+  .time-flip-enter {
+    animation: time-flip-enter-kf 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .time-flip-leave {
+    animation: time-flip-leave-kf 0.52s cubic-bezier(0.55, 0.06, 0.68, 0.19) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-transition-enter {
+      animation: none;
+    }
+
+    .time-flip-enter,
+    .time-flip-leave {
+      animation: none;
+    }
+  }
+}
