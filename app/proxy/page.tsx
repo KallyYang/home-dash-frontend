@@ -47,7 +47,7 @@ export default function ProxyPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-6">
-        <PageHeader title="Proxy" description="加载中…" />
+        <PageHeader title="Proxy" description="Loading…" />
         <StaggerContainer className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-24" />
@@ -87,56 +87,56 @@ export default function ProxyPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Proxy"
-        description={snap.service_name || "代理服务"}
+        description={snap.service_name || "Proxy Service"}
       />
 
       <StaggerContainer className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <SummaryCard
           icon={<Gauge className="h-4 w-4" />}
-          label="已使用"
+          label="Used"
           primary={`${usedPct.toFixed(0)}%`}
           secondary={`${snap.used_gb.toFixed(2)} / ${snap.total_gb.toFixed(2)} GB`}
           pct={usedPct}
         />
         <SummaryCard
           icon={<Cloud className="h-4 w-4" />}
-          label="剩余流量"
+          label="Remaining"
           primary={`${snap.remaining_gb.toFixed(2)} GB`}
-          secondary={`总计 ${snap.total_gb.toFixed(2)} GB`}
+          secondary={`Total ${snap.total_gb.toFixed(2)} GB`}
         />
         <SummaryCard
           icon={<RotateCw className="h-4 w-4" />}
-          label="重置流量"
-          primary={`${snap.reset_in_days} 天`}
-          secondary="距离下次流量重置"
+          label="Reset"
+          primary={`${snap.reset_in_days} days`}
+          secondary="Until next reset"
         />
         <SummaryCard
           icon={<Calendar className="h-4 w-4" />}
-          label="服务到期"
-          primary={`${snap.expire_in_days} 天`}
-          secondary="距离服务到期"
+          label="Expiry"
+          primary={`${snap.expire_in_days} days`}
+          secondary="Until service expiry"
         />
       </StaggerContainer>
 
       <Card>
         <CardHeader className="flex flex-row items-start justify-between space-y-0">
           <div>
-            <CardTitle className="text-base">最近流量使用</CardTitle>
+            <CardTitle className="text-base">Recent Traffic</CardTitle>
             <CardDescription>
               {chartData.length
-                ? `共 ${chartData.length} 天 · 单位 GB`
-                : "暂无数据"}
+                ? `${chartData.length} days · Unit GB`
+                : "No data"}
             </CardDescription>
           </div>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <LegendDot color="hsl(215 55% 72%)" label="下载" />
-            <LegendDot color="hsl(28 75% 78%)" label="上传" />
+            <LegendDot color="hsl(215 55% 72%)" label="Download" />
+            <LegendDot color="hsl(28 75% 78%)" label="Upload" />
           </div>
         </CardHeader>
         <CardContent>
           {chartData.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              未能从页面中解析出每日流量明细。
+              Unable to parse daily traffic details from the page.
             </p>
           ) : (
             <div className="h-48 w-full">
@@ -258,11 +258,11 @@ function LegendDot({
 function labelOf(name: string | number | undefined) {
   switch (name) {
     case "download":
-      return "下载";
+      return "Download";
     case "upload":
-      return "上传";
+      return "Upload";
     case "total":
-      return "合计";
+      return "Total";
     default:
       return String(name ?? "");
   }
