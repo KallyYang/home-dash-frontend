@@ -55,7 +55,7 @@ export default function CFAIPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-6">
-        <PageHeader title="AI" description="加载中…" />
+        <PageHeader title="AI" description="Loading…" />
         <StaggerContainer className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-24" />
@@ -73,7 +73,7 @@ export default function CFAIPage() {
         <AlertTitle>AI Gateway collector unavailable</AlertTitle>
         <AlertDescription>
           {data?.error ??
-            "Cloudflare AI Gateway collector 未启用或无法访问。请在后端设置 CFAI_ENABLED=true，并提供 CFAI_ACCOUNT_ID 与具有 AI Gateway / Account Analytics Read 权限的 CFAI_API_TOKEN。"}
+            "Cloudflare AI Gateway collector is not enabled or unreachable. Set CFAI_ENABLED=true on the backend, and provide CFAI_ACCOUNT_ID along with a CFAI_API_TOKEN that has AI Gateway / Account Analytics Read permissions."}
         </AlertDescription>
       </Alert>
     );
@@ -99,43 +99,43 @@ export default function CFAIPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         title="AI"
-        description={`${description} · 最近 ${snap.window_days} 天`}
+        description={`${description} · Last ${snap.window_days} days`}
       />
 
       <StaggerContainer className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <SummaryCard
           icon={<Activity className="h-4 w-4" />}
-          label="请求总数"
+          label="Total Requests"
           primary={snap.total_requests.toLocaleString()}
-          secondary={`错误率 ${snap.error_pct.toFixed(2)}%`}
+          secondary={`Error rate ${snap.error_pct.toFixed(2)}%`}
         />
         <SummaryCard
           icon={<Sparkles className="h-4 w-4" />}
-          label="Token 总量"
+          label="Total Tokens"
           primary={
             snap.total_tokens > 0 ? formatNumber(snap.total_tokens) : "—"
           }
           secondary={
             snap.total_tokens > 0 && snap.total_requests > 0
               ? `≈ ${formatNumber(Math.round(snap.total_tokens / snap.total_requests))} tok / req`
-              : "暂无数据"
+              : "No data"
           }
         />
         <SummaryCard
           icon={<Coins className="h-4 w-4" />}
-          label="成本估算"
+          label="Estimated Cost"
           primary={formatCost(snap.total_cost)}
           secondary={
             snap.total_requests > 0
               ? `≈ ${formatCost(snap.total_cost / snap.total_requests)} / req`
-              : "暂无请求"
+              : "No requests"
           }
         />
         <SummaryCard
           icon={<Database className="h-4 w-4" />}
-          label="缓存命中"
+          label="Cache Hit"
           primary={`${snap.cache_hit_pct.toFixed(2)}%`}
-          secondary={`命中 ${snap.total_cached.toLocaleString()} 次`}
+          secondary={`Hits ${snap.total_cached.toLocaleString()}`}
         />
       </StaggerContainer>
 
@@ -143,22 +143,22 @@ export default function CFAIPage() {
         <Card>
           <CardHeader className="flex flex-row items-start justify-between space-y-0">
             <div>
-              <CardTitle className="text-base">每日请求与缓存</CardTitle>
+              <CardTitle className="text-base">Daily Requests & Cache</CardTitle>
               <CardDescription>
                 {dailySeries.length
-                  ? `最近 ${dailySeries.length} 天`
-                  : "暂无数据"}
+                  ? `Last ${dailySeries.length} days`
+                  : "No data"}
               </CardDescription>
             </div>
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              <LegendDot className="bg-primary" label="请求" />
-              <LegendDot className="bg-emerald-500" label="缓存" />
-              <LegendDot className="bg-destructive" label="错误" />
+              <LegendDot className="bg-primary" label="Requests" />
+              <LegendDot className="bg-emerald-500" label="Cached" />
+              <LegendDot className="bg-destructive" label="Errors" />
             </div>
           </CardHeader>
           <CardContent>
             {dailySeries.length === 0 ? (
-              <p className="text-sm text-muted-foreground">暂无请求数据。</p>
+              <p className="text-sm text-muted-foreground">No request data.</p>
             ) : (
               <div className="h-48 w-full">
                 <ResponsiveContainer width="100%" height="100%">
@@ -193,21 +193,21 @@ export default function CFAIPage() {
                     />
                     <Bar
                       dataKey="requests"
-                      name="请求"
+                      name="Requests"
                       fill="hsl(220 40% 30%)"
                       radius={[6, 6, 0, 0]}
                       maxBarSize={24}
                     />
                     <Bar
                       dataKey="cached"
-                      name="缓存"
+                      name="Cached"
                       fill="hsl(152 60% 40%)"
                       radius={[6, 6, 0, 0]}
                       maxBarSize={24}
                     />
                     <Bar
                       dataKey="errors"
-                      name="错误"
+                      name="Errors"
                       fill="hsl(2 62% 50%)"
                       radius={[6, 6, 0, 0]}
                       maxBarSize={24}
@@ -222,11 +222,11 @@ export default function CFAIPage() {
         <Card>
           <CardHeader className="flex flex-row items-start justify-between space-y-0">
             <div>
-              <CardTitle className="text-base">每日 Token 与成本</CardTitle>
+              <CardTitle className="text-base">Daily Tokens & Cost</CardTitle>
               <CardDescription>
                 {dailySeries.length
-                  ? `最近 ${dailySeries.length} 天`
-                  : "暂无数据"}
+                  ? `Last ${dailySeries.length} days`
+                  : "No data"}
               </CardDescription>
             </div>
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
@@ -236,7 +236,7 @@ export default function CFAIPage() {
           </CardHeader>
           <CardContent>
             {dailySeries.length === 0 ? (
-              <p className="text-sm text-muted-foreground">暂无成本数据。</p>
+              <p className="text-sm text-muted-foreground">No cost data.</p>
             ) : (
               <div className="h-48 w-full">
                 <ResponsiveContainer width="100%" height="100%">
@@ -313,8 +313,8 @@ export default function CFAIPage() {
       >
         <DimensionList
           icon={<Cpu className="h-4 w-4" />}
-          title="按模型用量"
-          description="请求 · Token · 成本"
+          title="By Model"
+          description="Requests · Tokens · Cost"
           rows={snap.by_model.slice(0, 15)}
           totalRequests={snap.total_requests}
           totalCost={snap.total_cost}
@@ -323,8 +323,8 @@ export default function CFAIPage() {
         {snap.by_provider.length > 0 && (
           <DimensionList
             icon={<ListOrdered className="h-4 w-4" />}
-            title="按 Provider"
-            description="不同服务商的用量分布"
+            title="By Provider"
+            description="Usage distribution across providers"
             rows={snap.by_provider.slice(0, 15)}
             totalRequests={snap.total_requests}
             totalCost={snap.total_cost}
@@ -335,8 +335,8 @@ export default function CFAIPage() {
       {!snap.gateway_id && snap.by_gateway.length > 1 && (
         <DimensionList
           icon={<Activity className="h-4 w-4" />}
-          title="按 Gateway"
-          description="账号下所有 AI Gateway 的用量分布"
+          title="By Gateway"
+          description="Usage distribution across all AI Gateways in the account"
           rows={snap.by_gateway.slice(0, 15)}
           totalRequests={snap.total_requests}
           totalCost={snap.total_cost}
@@ -413,7 +413,7 @@ function DimensionList({
       </CardHeader>
       <CardContent>
         {rows.length === 0 ? (
-          <p className="text-sm text-muted-foreground">暂无数据</p>
+          <p className="text-sm text-muted-foreground">No data</p>
         ) : (
           <ul className="flex flex-col gap-2.5">
             {rows.map((r, i) => {
@@ -445,7 +445,7 @@ function DimensionList({
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <div className="mb-0.5 flex items-center justify-between text-[10px] text-muted-foreground">
-                        <span>请求占比</span>
+                        <span>Request share</span>
                         <span>{reqPct}%</span>
                       </div>
                       <div className="h-1.5 overflow-hidden rounded-full bg-muted/70">
@@ -457,7 +457,7 @@ function DimensionList({
                     </div>
                     <div>
                       <div className="mb-0.5 flex items-center justify-between text-[10px] text-muted-foreground">
-                        <span>成本占比</span>
+                        <span>Cost share</span>
                         <span>{costPct}%</span>
                       </div>
                       <div className="h-1.5 overflow-hidden rounded-full bg-muted/70">
@@ -473,12 +473,12 @@ function DimensionList({
                     <div className="flex flex-wrap gap-1.5 text-[10px] text-muted-foreground">
                       {r.cached_requests > 0 && (
                         <Badge variant="secondary" className="font-normal">
-                          缓存 {r.cached_requests.toLocaleString()}
+                          Cached {r.cached_requests.toLocaleString()}
                         </Badge>
                       )}
                       {showErrors && r.errored_requests > 0 && (
                         <Badge variant="destructive" className="font-normal">
-                          错误 {r.errored_requests.toLocaleString()}
+                          Errors {r.errored_requests.toLocaleString()}
                         </Badge>
                       )}
                     </div>
