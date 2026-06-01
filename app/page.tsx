@@ -132,9 +132,9 @@ export default function Page() {
           title: "Proxmox VE",
           icon: Server,
           tone: "indigo",
-          value: data.pve ? `${data.pve.nodes.length} nodes` : undefined,
-          description: data.pve?.fetched_at
-            ? `Updated: ${new Date(data.pve.fetched_at).toLocaleTimeString()}`
+          value: data.pve ? `${data.pve.totals.online_nodes} running` : undefined,
+          description: data.pve
+            ? `${data.pve.totals.online_nodes} / ${data.pve.totals.node_count} nodes online`
             : "Not configured",
           status: statusFromMeta(data.pve_meta.available, data.pve_meta.error),
           error: data.pve_meta.error,
@@ -146,9 +146,11 @@ export default function Page() {
           icon: Boxes,
           tone: "slate",
           value: data.k8s
-            ? `${data.k8s.node_count} nodes / ${data.k8s.pod_count} pods`
+            ? `${data.k8s.deployments.total} deployments`
             : undefined,
-          description: data.k8s?.version ? `Version: ${data.k8s.version}` : "Not configured",
+          description: data.k8s
+            ? `${data.k8s.deployments.ready} / ${data.k8s.deployments.total} ready${data.k8s.version ? ` · ${data.k8s.version}` : ""}`
+            : "Not configured",
           status: statusFromMeta(data.k8s_meta.available, data.k8s_meta.error),
           error: data.k8s_meta.error,
           href: "/k8s",

@@ -98,7 +98,7 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
           </span>
           <div className="space-y-1">
             <CardTitle className="text-gradient-brand text-lg font-semibold tracking-tight">
-              home-dash
+              HomeDash
             </CardTitle>
           </div>
         </CardHeader>

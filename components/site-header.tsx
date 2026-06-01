@@ -31,7 +31,7 @@ export function SiteHeader() {
                 <Activity className="size-4 text-white" strokeWidth={2.25} />
               </span>
               <span className="text-gradient-brand text-base font-semibold tracking-tight whitespace-nowrap">
-                home-dash
+                HomeDash
               </span>
             </Link>
             {authEnabled && (
@@ -45,7 +45,7 @@ export function SiteHeader() {
               </button>
             )}
           </div>
-          <nav className="-mx-1 flex items-center gap-4 overflow-x-auto px-1 text-sm [-ms-overflow-style:none] [scrollbar-width:none] sm:overflow-visible lg:gap-6 [&::-webkit-scrollbar]:hidden">
+          <nav className="-mx-1 flex items-center gap-4 overflow-x-auto px-1 pb-1 text-sm [-ms-overflow-style:none] [scrollbar-width:none] sm:overflow-visible sm:pb-0 lg:gap-6 [&::-webkit-scrollbar]:hidden">
             {nav.map((n) => {
               const isActive =
                 n.href === "/"
@@ -66,7 +66,7 @@ export function SiteHeader() {
                   {isActive && (
                     <motion.span
                       layoutId="nav-indicator"
-                      className="absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full bg-gradient-brand"
+                      className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-gradient-brand sm:-bottom-0.5"
                       transition={{
                         type: "spring",
                         stiffness: 380,
