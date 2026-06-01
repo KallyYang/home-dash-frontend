@@ -126,8 +126,12 @@ export default function K8SPage() {
       />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
-        <DeploymentsSection deployments={deployments.items} />
-        <PodsSection stats={pods} />
+        <div className="min-w-0">
+          <DeploymentsSection deployments={deployments.items} />
+        </div>
+        <div className="min-w-0">
+          <PodsSection stats={pods} />
+        </div>
       </div>
     </div>
   );
@@ -287,7 +291,7 @@ function DeploymentsSection({ deployments }: { deployments: K8SDeploymentSummary
               return (
                 <li
                   key={`${d.namespace}/${d.name}`}
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm"
+                  className="flex min-w-0 items-center gap-3 px-4 py-2.5 text-sm"
                 >
                   <div className="flex min-w-0 flex-1 items-center gap-2">
                     {healthy ? (
@@ -298,16 +302,16 @@ function DeploymentsSection({ deployments }: { deployments: K8SDeploymentSummary
                     <Badge variant="secondary" className="shrink-0 font-normal">
                       {d.namespace}
                     </Badge>
-                    <span className="truncate font-medium" title={d.name}>
+                    <span className="min-w-0 flex-1 truncate font-medium" title={d.name}>
                       {d.name}
                     </span>
                   </div>
                   <Progress
                     value={clamped}
                     indicatorClassName={indicatorClass}
-                    className="w-40 shrink-0"
+                    className="hidden w-24 shrink-0 sm:block sm:w-32 lg:w-40"
                   />
-                  <div className="w-16 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
+                  <div className="w-14 shrink-0 text-right text-xs tabular-nums text-muted-foreground sm:w-16">
                     {d.ready}/{d.desired}
                   </div>
                 </li>
