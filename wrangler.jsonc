@@ -10,10 +10,10 @@
   },
   "observability": {
     "enabled": true
-  },
-  "vars": {
-    "API_BASE": "https://api.home-dash.yourdomain.com"
   }
+  // "vars": {
+  //   "API_BASE": "https://api.home-dash.yourdomain.com"
+  // }
   // Optional bindings:
   // "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "home-dash-cache" }]
 }
