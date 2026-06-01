@@ -23,17 +23,29 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/70 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
-        <div className="mr-4 flex">
-          <Link href={"/" as Route} className="mr-6 flex items-center gap-2">
-            <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-brand shadow-sm shadow-primary/30 ring-1 ring-white/20">
-              <Activity className="size-4 text-white" strokeWidth={2.25} />
-            </span>
-            <span className="text-gradient-brand text-base font-semibold tracking-tight">
-              home-dash
-            </span>
-          </Link>
-          <nav className="flex items-center gap-4 text-sm lg:gap-6">
+      <div className="container max-w-screen-2xl py-2 sm:py-0">
+        <div className="flex flex-col gap-2 sm:h-14 sm:flex-row sm:items-center sm:gap-0">
+          <div className="flex items-center justify-between sm:mr-6 sm:justify-start">
+            <Link href={"/" as Route} className="flex items-center gap-2">
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-gradient-brand shadow-sm shadow-primary/30 ring-1 ring-white/20">
+                <Activity className="size-4 text-white" strokeWidth={2.25} />
+              </span>
+              <span className="text-gradient-brand text-base font-semibold tracking-tight whitespace-nowrap">
+                home-dash
+              </span>
+            </Link>
+            {authEnabled && (
+              <button
+                type="button"
+                onClick={() => lockSession()}
+                className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:hidden"
+                title="锁定面板"
+              >
+                <LogOut className="size-3.5" />
+              </button>
+            )}
+          </div>
+          <nav className="-mx-1 flex items-center gap-4 overflow-x-auto px-1 text-sm [-ms-overflow-style:none] [scrollbar-width:none] sm:overflow-visible lg:gap-6 [&::-webkit-scrollbar]:hidden">
             {nav.map((n) => {
               const isActive =
                 n.href === "/"
@@ -44,7 +56,7 @@ export function SiteHeader() {
                   key={n.href}
                   href={n.href}
                   className={cn(
-                    "relative py-1 transition-colors duration-200 hover:text-foreground",
+                    "relative shrink-0 py-1 transition-colors duration-200 hover:text-foreground",
                     isActive
                       ? "text-foreground font-medium"
                       : "text-muted-foreground"
@@ -66,19 +78,19 @@ export function SiteHeader() {
               );
             })}
           </nav>
+          {authEnabled && (
+            <div className="ml-auto hidden items-center sm:flex">
+              <button
+                type="button"
+                onClick={() => lockSession()}
+                className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                title="锁定面板"
+              >
+                <LogOut className="size-3.5" />
+              </button>
+            </div>
+          )}
         </div>
-        {authEnabled && (
-          <div className="ml-auto flex items-center">
-            <button
-              type="button"
-              onClick={() => lockSession()}
-              className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              title="锁定面板"
-            >
-              <LogOut className="size-3.5" />
-            </button>
-          </div>
-        )}
       </div>
     </header>
   );

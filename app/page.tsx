@@ -212,7 +212,7 @@ export default function Page() {
         </Alert>
       )}
 
-      <StaggerContainer className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+      <StaggerContainer className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {isLoading || !data
           ? [0, 1, 2, 3, 4].map((i) => <MetricCardSkeleton key={i} />)
           : cards.map((c) => (

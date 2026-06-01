@@ -17,12 +17,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-dvh bg-background font-sans text-foreground antialiased">
+      <body className="min-h-dvh overflow-x-hidden bg-background font-sans text-foreground antialiased">
         <AuthGate>
           <BackendGate>
             <div className="relative flex min-h-dvh flex-col">
               <SiteHeader />
-              <main className="container max-w-screen-2xl flex-1 py-8">
+              <main className="container max-w-screen-2xl flex-1 py-6 sm:py-8">
                 {children}
               </main>
             </div>

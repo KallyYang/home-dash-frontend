@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
-import { type LucideIcon } from "lucide-react";
+import { CircleDot, CircleOff, CircleAlert, CircleHelp, type LucideIcon } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 type Tone = "indigo" | "slate" | "teal" | "amber" | "rose";
@@ -24,14 +23,14 @@ interface MetricCardProps {
   tone?: Tone;
 }
 
-const statusMap: Record<
+const statusIconMap: Record<
   MetricCardProps["status"],
-  { label: string; variant: "success" | "warning" | "destructive" | "secondary" }
+  { Icon: LucideIcon; className: string; label: string }
 > = {
-  online: { label: "Online", variant: "success" },
-  offline: { label: "Offline", variant: "destructive" },
-  warn: { label: "Warn", variant: "warning" },
-  unknown: { label: "Unknown", variant: "secondary" },
+  online: { Icon: CircleDot, className: "text-success", label: "Online" },
+  offline: { Icon: CircleOff, className: "text-destructive", label: "Offline" },
+  warn: { Icon: CircleAlert, className: "text-warning", label: "Warn" },
+  unknown: { Icon: CircleHelp, className: "text-muted-foreground", label: "Unknown" },
 };
 
 const toneMap: Record<Tone, { bg: string; text: string; ring: string; glow: string }> = {
@@ -77,7 +76,8 @@ export function MetricCard({
   error,
   tone = "indigo",
 }: MetricCardProps) {
-  const s = statusMap[status];
+  const s = statusIconMap[status];
+  const StatusIcon = s.Icon;
   const t = toneMap[tone];
 
   const content = (
@@ -94,11 +94,11 @@ export function MetricCard({
         )}
         aria-hidden
       />
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-1.5">
-        <CardTitle className="flex items-center gap-2 text-xs font-medium">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 gap-2 p-4 pb-1.5">
+        <CardTitle className="flex min-w-0 items-center gap-2 text-xs font-medium">
           <span
             className={cn(
-              "flex size-7 items-center justify-center rounded-md ring-1",
+              "flex size-7 shrink-0 items-center justify-center rounded-md ring-1",
               t.bg,
               t.text,
               t.ring
@@ -106,9 +106,13 @@ export function MetricCard({
           >
             <Icon className="size-3.5" strokeWidth={2.25} />
           </span>
-          <span className="text-foreground/90">{title}</span>
+          <span className="truncate text-foreground/90">{title}</span>
         </CardTitle>
-        <Badge variant={s.variant}>{s.label}</Badge>
+        <StatusIcon
+          className={cn("size-4 shrink-0", s.className)}
+          strokeWidth={2.25}
+          aria-label={s.label}
+        />
       </CardHeader>
       <CardContent className="px-4 pb-2">
         <div className="text-xl font-semibold tracking-tight text-foreground">
