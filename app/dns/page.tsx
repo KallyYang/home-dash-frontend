@@ -49,7 +49,7 @@ export default function DNSPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-6">
-        <PageHeader title="DNS" description="加载中…" />
+        <PageHeader title="DNS" description="Loading…" />
         <StaggerContainer className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-24" />
@@ -67,7 +67,7 @@ export default function DNSPage() {
         <AlertTitle>DNS collector unavailable</AlertTitle>
         <AlertDescription>
           {data?.error ??
-            "DNS collector 未启用或无法访问。请在后端设置 DNS_ENABLED=true 并提供 DNS_URL / DNS_COOKIE（或 DNS_USERNAME/DNS_PASSWORD）。"}
+            "DNS collector is not enabled or unreachable. Set DNS_ENABLED=true on the backend and provide DNS_URL / DNS_COOKIE (or DNS_USERNAME/DNS_PASSWORD)."}
         </AlertDescription>
       </Alert>
     );
@@ -96,30 +96,30 @@ export default function DNSPage() {
       <StaggerContainer className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <SummaryCard
           icon={<Globe className="h-4 w-4" />}
-          label="DNS 查询总数"
+          label="Total DNS Queries"
           primary={snap.num_dns_queries.toLocaleString()}
-          secondary={`统计窗口 ${unitLabel(snap.time_units)}`}
+          secondary={`Window ${unitLabel(snap.time_units)}`}
         />
         <SummaryCard
           icon={<ShieldCheck className="h-4 w-4" />}
-          label="已拦截"
+          label="Blocked"
           primary={snap.num_blocked_filtering.toLocaleString()}
-          secondary={`占比 ${blockedPct.toFixed(2)}%`}
+          secondary={`Rate ${blockedPct.toFixed(2)}%`}
         />
         <SummaryCard
           icon={<Timer className="h-4 w-4" />}
-          label="平均处理时间"
+          label="Avg Processing Time"
           primary={`${(snap.avg_processing_time * 1000).toFixed(2)} ms`}
           secondary="avg_processing_time"
         />
         <SummaryCard
           icon={<Users className="h-4 w-4" />}
-          label="活跃客户端"
+          label="Active Clients"
           primary={`${snap.top_clients.length}`}
           secondary={
             snap.top_clients[0]
               ? `Top: ${snap.top_clients[0].name}`
-              : "暂无数据"
+              : "No data"
           }
         />
       </StaggerContainer>
@@ -127,21 +127,21 @@ export default function DNSPage() {
       <Card>
         <CardHeader className="flex flex-row items-start justify-between space-y-0">
           <div>
-            <CardTitle className="text-base">DNS 查询走势</CardTitle>
+            <CardTitle className="text-base">DNS Query Trend</CardTitle>
             <CardDescription>
               {queriesSeries.length
-                ? `最近 ${queriesSeries.length} 个${unitLabel(snap.time_units)}`
-                : "暂无数据"}
+                ? `Last ${queriesSeries.length} ${unitLabel(snap.time_units)}`
+                : "No data"}
             </CardDescription>
           </div>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <LegendDot className="bg-primary" label="查询" />
-            <LegendDot className="bg-destructive" label="拦截" />
+            <LegendDot className="bg-primary" label="Queries" />
+            <LegendDot className="bg-destructive" label="Blocked" />
           </div>
         </CardHeader>
         <CardContent>
           {queriesSeries.length === 0 ? (
-            <p className="text-sm text-muted-foreground">暂无查询数据。</p>
+            <p className="text-sm text-muted-foreground">No query data.</p>
           ) : (
             <div className="h-48 w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -175,13 +175,13 @@ export default function DNSPage() {
                   />
                   <Bar
                     dataKey="queries"
-                    name="查询"
+                    name="Queries"
                     fill="hsl(220 40% 30%)"
                     radius={[6, 6, 0, 0]}
                   />
                   <Bar
                     dataKey="blocked"
-                    name="拦截"
+                    name="Blocked"
                     fill="hsl(2 62% 50%)"
                     radius={[6, 6, 0, 0]}
                   />
@@ -195,8 +195,8 @@ export default function DNSPage() {
       <div className="grid gap-4 lg:grid-cols-2">
         <TopList
           icon={<ListOrdered className="h-4 w-4" />}
-          title="Top 查询域名"
-          description="解析次数最多的域名"
+          title="Top Queried Domains"
+          description="Domains with the most lookups"
           rows={snap.top_queried_domains.slice(0, 15).map((e) => ({
             name: e.name,
             value: e.count.toLocaleString(),
@@ -204,8 +204,8 @@ export default function DNSPage() {
         />
         <TopList
           icon={<Users className="h-4 w-4" />}
-          title="Top 客户端"
-          description="发起请求最多的客户端 IP"
+          title="Top Clients"
+          description="Clients with the most requests"
           rows={snap.top_clients.slice(0, 15).map((e) => ({
             name: e.name,
             value: e.count.toLocaleString(),
@@ -213,18 +213,18 @@ export default function DNSPage() {
         />
         <TopList
           icon={<ShieldCheck className="h-4 w-4" />}
-          title="Top 被拦截域名"
-          description="被过滤规则拦截的域名"
+          title="Top Blocked Domains"
+          description="Domains blocked by filter rules"
           rows={snap.top_blocked_domains.slice(0, 15).map((e) => ({
             name: e.name,
             value: e.count.toLocaleString(),
           }))}
-          emptyLabel="暂无拦截记录"
+          emptyLabel="No blocked records"
         />
         <TopList
           icon={<Server className="h-4 w-4" />}
-          title="上游 DNS 响应"
-          description="各上游服务器的响应次数与平均耗时"
+          title="Upstream DNS Responses"
+          description="Response count and avg latency per upstream server"
           rows={snap.top_upstreams_responses.map((e) => {
             const avg = snap.top_upstreams_avg_time.find(
               (x) => x.name === e.name,
@@ -304,7 +304,7 @@ function TopList({
       <CardContent>
         {rows.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            {emptyLabel ?? "暂无数据"}
+            {emptyLabel ?? "No data"}
           </p>
         ) : (
           <ul className="flex flex-col gap-1.5">
@@ -371,7 +371,7 @@ function buildLabel(index: number, total: number, unit: string) {
     return offset === 0 ? "now" : `-${offset}h`;
   }
   if (unit === "days") {
-    return offset === 0 ? "今日" : `-${offset}d`;
+    return offset === 0 ? "Today" : `-${offset}d`;
   }
   return `${index}`;
 }
@@ -379,11 +379,11 @@ function buildLabel(index: number, total: number, unit: string) {
 function unitLabel(unit: string) {
   switch (unit) {
     case "hours":
-      return "小时";
+      return "hours";
     case "days":
-      return "天";
+      return "days";
     case "minutes":
-      return "分钟";
+      return "minutes";
     default:
       return unit || "";
   }
