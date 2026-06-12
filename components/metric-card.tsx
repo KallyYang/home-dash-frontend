@@ -119,11 +119,7 @@ export function MetricCard({
           {value ?? "—"}
         </div>
         <CardDescription className="mt-0.5 line-clamp-2 text-xs">
-          {error ? (
-            <span className="text-destructive">{error}</span>
-          ) : (
-            description ?? ""
-          )}
+          {description ?? ""}
         </CardDescription>
       </CardContent>
     </Card>

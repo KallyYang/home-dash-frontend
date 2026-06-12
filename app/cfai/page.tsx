@@ -139,7 +139,7 @@ export default function CFAIPage() {
         />
       </StaggerContainer>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <StaggerContainer className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader className="flex flex-row items-start justify-between space-y-0">
             <div>
@@ -302,9 +302,9 @@ export default function CFAIPage() {
             )}
           </CardContent>
         </Card>
-      </div>
+      </StaggerContainer>
 
-      <div
+      <StaggerContainer
         className={
           snap.by_provider.length > 0
             ? "grid gap-4 lg:grid-cols-2"
@@ -330,17 +330,19 @@ export default function CFAIPage() {
             totalCost={snap.total_cost}
           />
         )}
-      </div>
+      </StaggerContainer>
 
       {!snap.gateway_id && snap.by_gateway.length > 1 && (
-        <DimensionList
-          icon={<Activity className="h-4 w-4" />}
-          title="By Gateway"
-          description="Usage distribution across all AI Gateways in the account"
-          rows={snap.by_gateway.slice(0, 15)}
-          totalRequests={snap.total_requests}
-          totalCost={snap.total_cost}
-        />
+        <StaggerContainer>
+          <DimensionList
+            icon={<Activity className="h-4 w-4" />}
+            title="By Gateway"
+            description="Usage distribution across all AI Gateways in the account"
+            rows={snap.by_gateway.slice(0, 15)}
+            totalRequests={snap.total_requests}
+            totalCost={snap.total_cost}
+          />
+        </StaggerContainer>
       )}
     </div>
   );

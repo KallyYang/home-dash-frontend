@@ -146,10 +146,10 @@ export default function Page() {
           icon: Boxes,
           tone: "slate",
           value: data.k8s
-            ? `${data.k8s.deployments.total} deployments`
+            ? `${data.k8s.deployments.ready} running`
             : undefined,
           description: data.k8s
-            ? `${data.k8s.deployments.ready} / ${data.k8s.deployments.total} ready${data.k8s.version ? ` · ${data.k8s.version}` : ""}`
+            ? `${data.k8s.nodes.filter((n) => n.role !== "control-plane" && n.ready).length} workers · ${data.k8s.pods.running} pods running`
             : "Not configured",
           status: statusFromMeta(data.k8s_meta.available, data.k8s_meta.error),
           error: data.k8s_meta.error,

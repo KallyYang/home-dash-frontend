@@ -118,7 +118,8 @@ export default function ProxyPage() {
         />
       </StaggerContainer>
 
-      <Card>
+      <StaggerContainer>
+        <Card>
         <CardHeader className="flex flex-row items-start justify-between space-y-0">
           <div>
             <CardTitle className="text-base">Recent Traffic</CardTitle>
@@ -196,7 +197,8 @@ export default function ProxyPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+        </Card>
+      </StaggerContainer>
     </div>
   );
 }

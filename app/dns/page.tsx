@@ -124,7 +124,8 @@ export default function DNSPage() {
         />
       </StaggerContainer>
 
-      <Card>
+      <StaggerContainer>
+        <Card>
         <CardHeader className="flex flex-row items-start justify-between space-y-0">
           <div>
             <CardTitle className="text-base">DNS Query Trend</CardTitle>
@@ -190,9 +191,10 @@ export default function DNSPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+        </Card>
+      </StaggerContainer>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <StaggerContainer className="grid gap-4 lg:grid-cols-2">
         <TopList
           icon={<ListOrdered className="h-4 w-4" />}
           title="Top Queried Domains"
@@ -237,7 +239,7 @@ export default function DNSPage() {
             };
           })}
         />
-      </div>
+      </StaggerContainer>
     </div>
   );
 }
