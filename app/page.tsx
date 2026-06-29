@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Server, Boxes, Cloud, Globe, Sparkles, AlertCircle, type LucideIcon } from "lucide-react";
 import { fetcher } from "@/lib/api";
-import type { Overview } from "@/lib/types";
+import type { Overview, WeatherSnapshot } from "@/lib/types";
 import { MetricCard } from "@/components/metric-card";
 import {
   Card,
@@ -110,9 +110,46 @@ function TimeTicker() {
   );
 }
 
+function WeatherWidget({ weather }: { weather?: WeatherSnapshot }) {
+  if (!weather) {
+    return (
+      <div className="flex items-center gap-3 sm:self-start">
+        <Skeleton className="size-14 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-7 w-16" />
+          <Skeleton className="h-3 w-24" />
+        </div>
+      </div>
+    );
+  }
+
+  const { now, today } = weather;
+
+  return (
+    <div className="flex items-center gap-3 sm:self-start" title={now.text}>
+      <i
+        className={`qi-${now.icon}-fill text-5xl leading-none text-foreground/90`}
+        aria-label={now.text}
+      />
+      <div className="flex flex-col leading-tight">
+        <span className="text-3xl font-semibold tabular-nums tracking-tight text-foreground">
+          {now.temp}°
+        </span>
+        <span className="text-xs text-muted-foreground tabular-nums">
+          {today.temp_max}° / {today.temp_min}°
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function Page() {
   const { data, error, isLoading } = useSWR<Overview>("/api/overview", fetcher, {
     refreshInterval: 15_000,
+  });
+
+  const { data: weather } = useSWR<WeatherSnapshot>("/api/weather", fetcher, {
+    refreshInterval: 5 * 60_000,
   });
 
   const cards: Array<{
@@ -199,10 +236,13 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeader
-        title="Overview"
-        description={<TimeTicker />}
-      />
+      <div className="flex flex-row items-start justify-between gap-4">
+        <PageHeader
+          title="Overview"
+          description={<TimeTicker />}
+        />
+        <WeatherWidget weather={weather} />
+      </div>
 
       {error && (
         <Alert variant="destructive">

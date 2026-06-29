@@ -191,6 +191,29 @@ export interface CFAITimePoint {
   errors: number;
 }
 
+export interface WeatherNow {
+  temp: number;
+  icon: string;
+  text: string;
+}
+
+export interface WeatherToday {
+  temp_max: number;
+  temp_min: number;
+}
+
+export interface WeatherMinutely {
+  summary: string;
+}
+
+export interface WeatherSnapshot {
+  location: string;
+  updated_at: string;
+  now: WeatherNow;
+  today: WeatherToday;
+  minutely?: WeatherMinutely;
+}
+
 export interface CFAISnapshot {
   account_id: string;
   gateway_id: string;
