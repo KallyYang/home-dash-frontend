@@ -130,22 +130,29 @@ function WeatherWidget({
     );
   }
 
-  const { now, today } = weather;
+  const { now, today, minutely } = weather;
 
   return (
-    <div className="flex items-center gap-3 sm:self-start" title={now.text}>
-      <i
-        className={`qi-${now.icon}-fill text-5xl leading-none text-foreground/90`}
-        aria-label={now.text}
-      />
-      <div className="flex flex-col leading-tight">
-        <span className="text-3xl font-semibold tabular-nums tracking-tight text-foreground">
-          {now.temp}°
-        </span>
-        <span className="text-xs text-muted-foreground tabular-nums">
-          {today.temp_max}° / {today.temp_min}°
-        </span>
+    <div className="flex flex-col items-end gap-1 sm:self-start" title={now.text}>
+      <div className="flex items-center gap-3">
+        <i
+          className={`qi-${now.icon}-fill text-5xl leading-none text-foreground/90`}
+          aria-label={now.text}
+        />
+        <div className="flex flex-col leading-tight">
+          <span className="text-3xl font-semibold tabular-nums tracking-tight text-foreground">
+            {now.temp}°
+          </span>
+          <span className="text-xs text-muted-foreground tabular-nums">
+            {today.temp_max}° / {today.temp_min}°
+          </span>
+        </div>
       </div>
+      {minutely?.summary && (
+        <span className="max-w-[16rem] truncate text-xs text-muted-foreground">
+          {minutely.summary}
+        </span>
+      )}
     </div>
   );
 }
