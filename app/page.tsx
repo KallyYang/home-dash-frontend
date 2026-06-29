@@ -110,7 +110,14 @@ function TimeTicker() {
   );
 }
 
-function WeatherWidget({ weather }: { weather?: WeatherSnapshot }) {
+function WeatherWidget({
+  weather,
+  error,
+}: {
+  weather?: WeatherSnapshot;
+  error?: unknown;
+}) {
+  if (error) return null;
   if (!weather) {
     return (
       <div className="flex items-center gap-3 sm:self-start">
@@ -148,9 +155,16 @@ export default function Page() {
     refreshInterval: 15_000,
   });
 
-  const { data: weather } = useSWR<WeatherSnapshot>("/api/weather", fetcher, {
+  const { data: weatherWrapped, error: weatherError } = useSWR<{
+    data: WeatherSnapshot | null;
+    updated_at?: string;
+    error?: string;
+  }>("/api/weather", fetcher, {
     refreshInterval: 5 * 60_000,
+    shouldRetryOnError: false,
   });
+  const weather = weatherWrapped?.data ?? undefined;
+  const weatherErr = weatherError || weatherWrapped?.error;
 
   const cards: Array<{
     key: string;
@@ -241,7 +255,7 @@ export default function Page() {
           title="Overview"
           description={<TimeTicker />}
         />
-        <WeatherWidget weather={weather} />
+        <WeatherWidget weather={weather} error={weatherErr} />
       </div>
 
       {error && (
