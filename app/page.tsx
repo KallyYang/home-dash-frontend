@@ -95,7 +95,7 @@ function TimeTicker() {
   }, []);
 
   return (
-    <span className="inline-flex items-center gap-1 font-medium tabular-nums">
+    <span className="inline-flex items-center gap-1 text-xs font-medium tabular-nums">
       <span className="text-muted-foreground">where the time is</span>
       <span className="inline-flex items-center">
         {parts.map((part, index) => (
