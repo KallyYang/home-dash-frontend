@@ -95,7 +95,6 @@ function TimeTicker() {
   }, []);
 
   return (
-    <span className="inline-flex items-center gap-1 font-medium tabular-nums">
     <span className="inline-flex items-center gap-1 text-xs font-medium tabular-nums">
       <span className="text-muted-foreground">where the time is</span>
       <span className="inline-flex items-center">
@@ -127,6 +126,7 @@ function WeatherWidget({
 
   if (!weather) {
     return (
+<<<<<<< HEAD
       <div className={containerClass}>
         <div className="flex items-center gap-3">
           <Skeleton className="size-12 rounded-full" />
@@ -134,6 +134,13 @@ function WeatherWidget({
             <Skeleton className="h-7 w-16" />
             <Skeleton className="h-3 w-20" />
           </div>
+=======
+      <div className="flex items-center gap-3 sm:self-end">
+        <Skeleton className="size-14 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-7 w-16" />
+          <Skeleton className="h-3 w-24" />
+>>>>>>> 8b23d4226d9fdd014b1562c6208003a9877bb13d
         </div>
         <Skeleton className="h-3 w-40" />
       </div>
@@ -143,7 +150,11 @@ function WeatherWidget({
   const { now, today, minutely } = weather;
 
   return (
+<<<<<<< HEAD
     <div className={containerClass} title={now.text}>
+=======
+    <div className="flex flex-col items-end gap-1 sm:self-end" title={now.text}>
+>>>>>>> 8b23d4226d9fdd014b1562c6208003a9877bb13d
       <div className="flex items-center gap-3">
         <i
           className={`qi-${now.icon}-fill text-5xl leading-none text-foreground/90`}
@@ -265,7 +276,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-row items-start justify-between gap-4">
+      <div className="flex flex-row items-end justify-between gap-4">
         <PageHeader
           title="Overview"
           description={<TimeTicker />}
