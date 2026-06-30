@@ -117,15 +117,24 @@ function WeatherWidget({
   weather?: WeatherSnapshot;
   error?: unknown;
 }) {
-  if (error) return null;
+  // 固定最小高度，避免天气数据加载前后撑高/塌缩导致整页布局抖动
+  const containerClass = "flex min-h-[68px] flex-col items-end gap-1 sm:self-start";
+
+  if (error) {
+    return <div className={containerClass} aria-hidden="true" />;
+  }
+
   if (!weather) {
     return (
-      <div className="flex items-center gap-3 sm:self-start">
-        <Skeleton className="size-14 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-7 w-16" />
-          <Skeleton className="h-3 w-24" />
+      <div className={containerClass}>
+        <div className="flex items-center gap-3">
+          <Skeleton className="size-12 rounded-full" />
+          <div className="flex flex-col gap-1.5">
+            <Skeleton className="h-7 w-16" />
+            <Skeleton className="h-3 w-20" />
+          </div>
         </div>
+        <Skeleton className="h-3 w-40" />
       </div>
     );
   }
@@ -133,7 +142,7 @@ function WeatherWidget({
   const { now, today, minutely } = weather;
 
   return (
-    <div className="flex flex-col items-end gap-1 sm:self-start" title={now.text}>
+    <div className={containerClass} title={now.text}>
       <div className="flex items-center gap-3">
         <i
           className={`qi-${now.icon}-fill text-5xl leading-none text-foreground/90`}
@@ -148,11 +157,9 @@ function WeatherWidget({
           </span>
         </div>
       </div>
-      {minutely?.summary && (
-        <span className="max-w-[16rem] truncate text-xs text-muted-foreground">
-          {minutely.summary}
-        </span>
-      )}
+      <span className="block h-4 max-w-[16rem] truncate text-xs text-muted-foreground">
+        {minutely?.summary ?? ""}
+      </span>
     </div>
   );
 }

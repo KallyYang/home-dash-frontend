@@ -219,9 +219,19 @@ function NodeCard({ node }: { node: K8SNodeSummary }) {
             )}
           </div>
         </div>
-        <Badge variant={node.ready ? "success" : "destructive"}>
-          {node.ready ? "Ready" : "NotReady"}
-        </Badge>
+        {node.ready ? (
+          <CircleDot
+            className="size-4 shrink-0 text-success"
+            strokeWidth={2.25}
+            aria-label="Ready"
+          />
+        ) : (
+          <CircleOff
+            className="size-4 shrink-0 text-destructive"
+            strokeWidth={2.25}
+            aria-label="NotReady"
+          />
+        )}
       </CardHeader>
       <CardContent className="flex flex-col gap-2 p-3 pt-0 text-sm">
         <div className="grid grid-cols-3 gap-1.5">
