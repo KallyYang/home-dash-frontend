@@ -93,7 +93,7 @@ export function PageHeader({
             style={{
               willChange: "filter, transform, opacity",
             }}
-            className="text-3xl font-semibold tracking-tight text-gradient-brand"
+            className="text-3xl font-semibold tracking-tight text-foreground"
           >
             {title}
           </motion.h1>
