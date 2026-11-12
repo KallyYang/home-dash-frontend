@@ -11,6 +11,8 @@ const eslintConfig = [
       ".wrangler/**",
       "node_modules/**",
       "next-env.d.ts",
+      "cloudflare-env.d.ts",
+      "workers/monitor/.wrangler/**",
     ],
   },
 ];

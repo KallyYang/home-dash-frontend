@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "home-dash-frontend",
-  "main": ".open-next/worker.js",
+  "main": "worker.ts",
   "compatibility_date": "2025-03-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
@@ -9,7 +9,20 @@
     "directory": ".open-next/assets"
   },
   "observability": {
-    "enabled": true
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "kv_namespaces": [{ "binding": "MONITOR_STATE" }],
+  "secrets": {
+    "required": ["TAILSCALE_API_KEY", "CF_API_TOKEN", "CF_ACCOUNT_ID", "BARK_KEY"]
+  },
+  "vars": {
+    "MONITOR_TAILSCALE_NODES": "[]",
+    "MONITOR_CLOUDFLARED_TUNNELS": "[]",
+    "OFFLINE_THRESHOLD_MINUTES": "10",
+    "FAIL_THRESHOLD": "2",
+    "BARK_SERVER": "https://api.day.app"
   }
   // "vars": {
   //   "API_BASE": "https://api.home-dash.yourdomain.com"

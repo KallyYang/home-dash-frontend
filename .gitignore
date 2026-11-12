@@ -10,6 +10,8 @@ next-env.d.ts
 .open-next/
 .vercel/
 .wrangler/
+cloudflare-env.d.ts
+.dev.vars*
 
 # Build artifacts
 dist/
