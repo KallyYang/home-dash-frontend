@@ -18,15 +18,13 @@
     "required": ["TAILSCALE_API_KEY", "CF_API_TOKEN", "CF_ACCOUNT_ID", "BARK_KEY"]
   },
   "vars": {
+    "API_BASE": "https://dash-backend.kallyyang.com",
     "MONITOR_TAILSCALE_NODES": "[\"tailscale\"]",
     "MONITOR_CLOUDFLARED_TUNNELS": "[\"k8s\"]",
     "OFFLINE_THRESHOLD_MINUTES": "10",
     "FAIL_THRESHOLD": "2",
     "BARK_SERVER": "https://api.day.app"
   }
-  // "vars": {
-  //   "API_BASE": "https://api.home-dash.yourdomain.com"
-  // }
   // Optional bindings:
   // "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "home-dash-cache" }]
 }
