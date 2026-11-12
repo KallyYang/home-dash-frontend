@@ -13,7 +13,7 @@
     "head_sampling_rate": 1
   },
   "triggers": { "crons": ["*/5 * * * *"] },
-  "kv_namespaces": [{ "binding": "MONITOR_STATE" }],
+  "kv_namespaces": [{ "binding": "MONITOR_STATE", "id": "11333a2478c0448abe208b5dc7639096" }],
   "secrets": {
     "required": ["TAILSCALE_API_KEY", "CF_API_TOKEN", "CF_ACCOUNT_ID", "BARK_KEY"]
   },
