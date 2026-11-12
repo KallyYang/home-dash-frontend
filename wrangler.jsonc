@@ -18,8 +18,8 @@
     "required": ["TAILSCALE_API_KEY", "CF_API_TOKEN", "CF_ACCOUNT_ID", "BARK_KEY"]
   },
   "vars": {
-    "MONITOR_TAILSCALE_NODES": "[]",
-    "MONITOR_CLOUDFLARED_TUNNELS": "[]",
+    "MONITOR_TAILSCALE_NODES": "[\"tailscale\"]",
+    "MONITOR_CLOUDFLARED_TUNNELS": "[\"k8s\"]",
     "OFFLINE_THRESHOLD_MINUTES": "10",
     "FAIL_THRESHOLD": "2",
     "BARK_SERVER": "https://api.day.app"

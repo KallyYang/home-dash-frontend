@@ -183,7 +183,7 @@ test("invalid config fails closed and empty whitelists make no requests", async 
   assert.equal(typeof worker.scheduled, "function");
 });
 
-test("the unified worker delegates HTTP, preserves exports and runs Cron without an HTTP monitor endpoint", async () => {
+test("the unified worker delegates HTTP, preserves exports and runs Cron", async () => {
   const sourceDirectory = join(directory, "workers/monitor/src");
   const generatedDirectory = join(directory, ".open-next");
   mkdirSync(sourceDirectory, { recursive: true });
@@ -207,4 +207,35 @@ test("the unified worker delegates HTTP, preserves exports and runs Cron without
   assert.equal(await unified.default.fetch(request, env, context), response);
   await unified.default.scheduled({ cron: "*/5 * * * *" }, env, context);
   assert.ok(logs.some((entry) => entry.includes('"event":"monitor_completed"')));
+});
+
+test("snapshot reads only whitelist keys, distinguishes stale and pending, and never returns secrets", async () => {
+  const { readMonitorSnapshot } = require(join(directory, "snapshot.js"));
+  const env = environment();
+  env.MONITOR_TAILSCALE_NODES = '["nas","old","missing","broken"]';
+  env.MONITOR_CLOUDFLARED_TUNNELS = "[]";
+  env.values.set("tailscale:nas", JSON.stringify({ status: "online", failCount: 0, notified: false, lastChecked: new Date(now).toISOString(), extraSecret: "never-return" }));
+  env.values.set("tailscale:old", JSON.stringify({ status: "online", failCount: 0, notified: false, lastChecked: new Date(now - 16 * 60000).toISOString() }));
+  env.values.set("tailscale:broken", JSON.stringify({ status: "offline", failCount: -1 }));
+  env.values.set("tailscale:unlisted", JSON.stringify({ status: "online" }));
+  const before = [...env.values];
+  globalThis.fetch = async () => { throw new Error("Snapshot must not fetch upstream"); };
+  const snapshot = await readMonitorSnapshot(env, now);
+  assert.deepEqual(snapshot.nodes.map((node) => node.freshness), ["fresh", "stale", "pending", "error"]);
+  assert.equal(snapshot.nodes[1].status, "online");
+  assert.equal(snapshot.nodes[2].status, "unknown");
+  assert.ok(!JSON.stringify(snapshot).includes("never-return"));
+  assert.ok(!JSON.stringify(snapshot).includes(env.BARK_KEY));
+  assert.equal(snapshot.nodes.length, 4);
+  assert.deepEqual([...env.values], before);
+});
+
+test("a single KV read failure is isolated and malformed whitelists fail closed", async () => {
+  const { readMonitorSnapshot } = require(join(directory, "snapshot.js"));
+  const env = environment();
+  env.MONITOR_STATE.get = async (key) => { if (key.startsWith("tailscale:")) throw new Error("KV unavailable"); return null; };
+  const snapshot = await readMonitorSnapshot(env, now);
+  assert.deepEqual(snapshot.nodes.map((node) => node.freshness), ["error", "pending"]);
+  env.MONITOR_TAILSCALE_NODES = "invalid";
+  await assert.rejects(readMonitorSnapshot(env, now));
 });
