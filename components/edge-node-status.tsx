@@ -43,7 +43,7 @@ export function EdgeNodeStatus({ source }: { source: Source }) {
     const status: "online" | "offline" | "warn" = hasUnknown ? "warn" : online === nodes.length ? "online" : online === 0 ? "offline" : "warn";
     return {
       status,
-      value: `${online}/${nodes.length} 在线`,
+      value: `${online}/${nodes.length} online`,
       description: nodes.map((node) => node.name).join(" · "),
     };
   };
