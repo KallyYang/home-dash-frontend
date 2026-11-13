@@ -3,7 +3,6 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { AuthGate } from "@/components/auth-gate";
 import { BackendGate } from "@/components/backend-gate";
-import { EdgeNodeStatus } from "@/components/edge-node-status";
 
 export const metadata: Metadata = {
   title: "HomeDash",
@@ -22,7 +21,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthGate>
           <div className="relative flex min-h-dvh flex-col">
             <SiteHeader />
-            <EdgeNodeStatus />
             <BackendGate>
               <main className="container max-w-screen-2xl flex-1 py-6 sm:py-8">
                 {children}

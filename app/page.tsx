@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { StaggerContainer } from "@/components/stagger-container";
 import { PageHeader } from "@/components/page-header";
+import { EdgeNodeStatus } from "@/components/edge-node-status";
 
 type Tone = "indigo" | "slate" | "teal" | "amber" | "rose";
 
@@ -282,7 +283,7 @@ export default function Page() {
         </Alert>
       )}
 
-      <StaggerContainer className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+      <StaggerContainer className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {isLoading || !data
           ? [0, 1, 2, 3, 4].map((i) => <MetricCardSkeleton key={i} />)
           : cards.map((c) => (
@@ -298,6 +299,7 @@ export default function Page() {
                 href={c.href}
               />
             ))}
+        <EdgeNodeStatus />
       </StaggerContainer>
     </div>
   );
