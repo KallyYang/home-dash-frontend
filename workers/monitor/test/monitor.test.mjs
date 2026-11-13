@@ -93,7 +93,7 @@ test("Tailscale uses strict ten-minute boundary and reports missing whitelist no
   globalThis.fetch = async (_url, options) => {
     assert.equal(options.headers.Authorization, "Bearer test-only-tailscale");
     assert.ok(options.signal instanceof AbortSignal);
-    assert.equal(options.redirect, "error");
+    assert.equal(options.redirect, "manual");
     return json({ devices: [{ hostname: "nas", lastSeen: new Date(now - 600000).toISOString() }, { hostname: "old", lastSeen: new Date(now - 600001).toISOString() }, { hostname: "ignored" }] });
   };
   const results = await checkTailscale(environment(), ["nas", "old", "missing"], 10, now);

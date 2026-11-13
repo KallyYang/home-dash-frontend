@@ -4,7 +4,7 @@ export async function fetchJson(url: string, token?: string): Promise<Record<str
   const response = await fetch(url, {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     signal: AbortSignal.timeout(10000),
-    redirect: "error",
+    redirect: "manual",
   });
   if (!response.ok) {
     await response.body?.cancel();
