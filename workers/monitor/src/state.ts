@@ -50,7 +50,7 @@ export async function updateNodeState(env: CloudflareEnv, result: CheckResult, f
       delivered = await sendBark(env, title, body);
     }
     console.log(JSON.stringify({ event: "node_checked", key, ...state, notification: notifyOffline ? "offline" : notifyRecovery ? "recovery" : null, delivered }));
-  } catch {
-    console.error(JSON.stringify({ event: "node_state_failed", key, reason: "kv_or_state_failure" }));
+  } catch (error) {
+    console.error(JSON.stringify({ event: "node_state_failed", key, reason: "kv_or_state_failure", message: error instanceof Error ? error.message : String(error) }));
   }
 }

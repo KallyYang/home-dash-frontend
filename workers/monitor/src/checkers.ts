@@ -21,8 +21,8 @@ export async function checkTailscale(env: CloudflareEnv, names: string[], thresh
       const offline = now - Date.parse(device.lastSeen) > thresholdMinutes * 60 * 1000;
       return { source: "tailscale", name, status: offline ? "offline" : "online", reason: `lastSeen: ${device.lastSeen}；离线阈值: ${thresholdMinutes} 分钟` };
     });
-  } catch {
-    console.error(JSON.stringify({ event: "source_skipped", source: "tailscale", reason: "api_or_payload_failure" }));
+  } catch (error) {
+    console.error(JSON.stringify({ event: "source_skipped", source: "tailscale", reason: "api_or_payload_failure", message: error instanceof Error ? error.message : String(error) }));
     return null;
   }
 }
@@ -61,8 +61,8 @@ export async function checkCloudflared(env: CloudflareEnv, names: string[]): Pro
       const offline = tunnel.status !== "healthy" || empty;
       return { source: "cloudflared", name, status: offline ? "offline" : "online", reason: `隧道状态: ${tunnel.status}${empty ? "；connections 为空" : ""}` };
     });
-  } catch {
-    console.error(JSON.stringify({ event: "source_skipped", source: "cloudflared", reason: "api_or_payload_failure" }));
+  } catch (error) {
+    console.error(JSON.stringify({ event: "source_skipped", source: "cloudflared", reason: "api_or_payload_failure", message: error instanceof Error ? error.message : String(error) }));
     return null;
   }
 }

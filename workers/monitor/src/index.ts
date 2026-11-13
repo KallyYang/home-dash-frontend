@@ -20,8 +20,8 @@ export async function runMonitor(env: CloudflareEnv, now = Date.now()): Promise<
       if (results === null) return;
       for (const result of results) await updateNodeState(env, result, failThreshold, now);
       console.log(JSON.stringify({ event: "source_checked", source, nodes: results.length, online: results.filter((result) => result.status === "online").length, offline: results.filter((result) => result.status === "offline").length }));
-    } catch {
-      console.error(JSON.stringify({ event: "source_skipped", source, reason: "invalid_configuration" }));
+    } catch (error) {
+      console.error(JSON.stringify({ event: "source_skipped", source, reason: "invalid_configuration", message: error instanceof Error ? error.message : String(error) }));
     }
   }));
   console.log(JSON.stringify({ event: "monitor_completed", checkedAt: new Date(now).toISOString() }));
