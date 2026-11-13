@@ -49,7 +49,7 @@ export async function updateNodeState(env: CloudflareEnv, result: CheckResult, f
       const body = `${result.reason}\n${notifyOffline ? `连续 ${failCount} 次检查离线` : "节点已恢复在线"}\n检查时间: ${checked}`;
       delivered = await sendBark(env, title, body);
     }
-    console.log(JSON.stringify({ event: "node_checked", key, ...state, notification: notifyOffline ? "offline" : notifyRecovery ? "recovery" : null, delivered }));
+    console.log(JSON.stringify({ event: "node_checked", key, ...state, reason: result.reason, notification: notifyOffline ? "offline" : notifyRecovery ? "recovery" : null, delivered }));
   } catch (error) {
     console.error(JSON.stringify({ event: "node_state_failed", key, reason: "kv_or_state_failure", message: error instanceof Error ? error.message : String(error) }));
   }

@@ -11,7 +11,7 @@ export async function checkTailscale(env: CloudflareEnv, names: string[], thresh
     }
     const devices: Record<string, unknown>[] = payload.devices;
     return names.map((name) => {
-      const matches = devices.filter((device) => device.hostname === name);
+      const matches = devices.filter((device) => String(device.hostname).toLowerCase() === name.toLowerCase());
       if (matches.length > 1) throw new Error("Ambiguous hostname");
       const device = matches[0];
       if (!device) return { source: "tailscale", name, status: "offline", reason: "节点不存在或未加入 tailnet" };
@@ -50,7 +50,7 @@ export async function checkCloudflared(env: CloudflareEnv, names: string[]): Pro
       }
     }
     return names.map((name) => {
-      const matches = tunnels.filter((tunnel) => tunnel.name === name);
+      const matches = tunnels.filter((tunnel) => String(tunnel.name).toLowerCase() === name.toLowerCase());
       if (matches.length > 1) throw new Error("Ambiguous tunnel name");
       const tunnel = matches[0];
       if (!tunnel) return { source: "cloudflared", name, status: "offline", reason: "隧道不存在或已删除" };
