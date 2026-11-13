@@ -299,7 +299,8 @@ export default function Page() {
                 href={c.href}
               />
             ))}
-        <EdgeNodeStatus />
+        <EdgeNodeStatus source="tailscale" />
+        <EdgeNodeStatus source="cloudflared" />
       </StaggerContainer>
     </div>
   );

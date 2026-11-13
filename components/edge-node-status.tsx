@@ -25,7 +25,7 @@ async function fetchSnapshot(url: string): Promise<MonitorSnapshot> {
   return response.json();
 }
 
-export function EdgeNodeStatus() {
+export function EdgeNodeStatus({ source }: { source: Source }) {
   const pathname = usePathname();
   const { data, error } = useSWR<MonitorSnapshot>(
     pathname === "/" ? "/api/monitor" : null,
@@ -39,20 +39,16 @@ export function EdgeNodeStatus() {
     const nodes = (data?.nodes ?? []).filter((node) => node.source === source);
     if (nodes.length === 0) return { status: "unknown" as const, value: undefined, description: "未配置节点" };
     const online = nodes.filter((node) => node.freshness === "fresh" && node.status === "online").length;
-    const status: "online" | "offline" | "warn" = online === nodes.length ? "online" : online === 0 ? "offline" : "warn";
+    const hasUnknown = nodes.some((node) => node.freshness !== "fresh" || node.status === "unknown");
+    const status: "online" | "offline" | "warn" = hasUnknown ? "warn" : online === nodes.length ? "online" : online === 0 ? "offline" : "warn";
     return {
       status,
       value: `${online}/${nodes.length} 在线`,
-      description: `共 ${nodes.length} 个节点 · 每 5 分钟检查`,
+      description: nodes.map((node) => node.name).join(" · "),
     };
   };
 
-  return (
-    <>
-      {SOURCES.map((s) => {
-        const summary = summaryFor(s.key);
-        return <MetricCard key={s.key} title={s.title} icon={s.icon} tone={s.tone} value={summary.value} description={summary.description} status={summary.status} />;
-      })}
-    </>
-  );
+  const config = SOURCES.find((entry) => entry.key === source)!;
+  const summary = summaryFor(source);
+  return <MetricCard title={config.title} icon={config.icon} tone={config.tone} value={summary.value} description={summary.description} status={summary.status} />;
 }
